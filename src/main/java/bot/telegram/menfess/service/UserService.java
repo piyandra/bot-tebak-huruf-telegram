@@ -1,0 +1,32 @@
+package bot.telegram.menfess.service;
+
+import bot.telegram.menfess.entity.User;
+import bot.telegram.menfess.repository.UserRespository;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    private final UserRespository userRespository;
+
+    public UserService(UserRespository userRespository) {
+        this.userRespository = userRespository;
+    }
+
+    public User findById(Long id) {
+        return userRespository.findById(id).orElse(null);
+    }
+    public User addUser(User user) {
+        return userRespository.save(user);
+    }
+    public Long findUserPoints(Long userId) {
+        return userRespository.findById(userId).map(User::getPoints).orElse(0L);
+    }
+    public User updatePoints(Long id, Long points) {
+        return userRespository.findById(id).map(user -> {
+            user.setPoints(points + user.getPoints());
+            return userRespository.save(user);
+        }).orElse(null);
+    }
+}
