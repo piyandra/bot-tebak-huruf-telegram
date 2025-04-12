@@ -45,7 +45,7 @@ public class TelegramBotMain extends TelegramLongPollingBot {
     }
 
     private void startGame(Long chatId) {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/bot/telegram/menfess/utils/wordlist.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/bot/telegram/wordle/utils/wordlist.csv"))) {
             String[] words = br.lines().toArray(String[]::new);
             int randomIndex = (int) (Math.random() * words.length);
             String answer = words[randomIndex].toUpperCase();
