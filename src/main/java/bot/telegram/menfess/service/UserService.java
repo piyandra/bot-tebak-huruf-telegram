@@ -17,16 +17,16 @@ public class UserService {
     public User findById(Long id) {
         return userRespository.findById(id).orElse(null);
     }
-    public User addUser(User user) {
-        return userRespository.save(user);
+    public void addUser(User user) {
+        userRespository.save(user);
     }
     public Long findUserPoints(Long userId) {
         return userRespository.findById(userId).map(User::getPoints).orElse(0L);
     }
-    public User updatePoints(Long id, Long points) {
-        return userRespository.findById(id).map(user -> {
+    public void updatePoints(Long id, Long points) {
+        userRespository.findById(id).map(user -> {
             user.setPoints(points + user.getPoints());
             return userRespository.save(user);
-        }).orElse(null);
+        });
     }
 }

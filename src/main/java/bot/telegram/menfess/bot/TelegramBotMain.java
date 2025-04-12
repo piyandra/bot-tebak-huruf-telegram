@@ -80,8 +80,12 @@ public class TelegramBotMain extends TelegramLongPollingBot {
 
     private void handleGuess(Long chatId, String guess) {
         String answer = userAnswerMap.get(chatId);
-        char[] resultChars = new UserWordUtils().userWordListRequest(answer, guess);
+        if (answer == null) {
+            message("Ketik /start untuk memulai permainan.", chatId);
+            return;
+        }
 
+        char[] resultChars = new UserWordUtils().userWordListRequest(answer, guess);
         StringBuilder result = new StringBuilder();
         for (char c : resultChars) {
             switch (c) {
@@ -94,14 +98,13 @@ public class TelegramBotMain extends TelegramLongPollingBot {
         if (result.toString().contains(YELLOW_BOX) || result.toString().contains(RED_BOX)) {
             message("Tebakanmu: " + result, chatId);
         } else {
-            setPoints(chatId, 10L);
+            setPoints(chatId);
             var points = getPoints(chatId);
-            message("Selamat, kamu sudah menebak dengan benar!\nPoint Kamu adalah " + points , chatId);
+            message("Selamat, kamu sudah menebak dengan benar!\nPoint Kamu adalah " + points, chatId);
             userStateMap.put(chatId, UserState.STARTED);
             userAnswerMap.remove(chatId);
         }
     }
-
     private void message(String text, Long chatId) {
         try {
             SendMessage sendMessage = SendMessage.builder()
@@ -113,37 +116,36 @@ public class TelegramBotMain extends TelegramLongPollingBot {
             log.error("Gagal mengirim pesan: {}", e.getMessage());
         }
     }
-
     private Long getPoints(Long usersId) {
         return userService.findUserPoints(usersId);
     }
-    private void setPoints(Long usersId, Long points) {
-        userService.updatePoints(usersId, points);
+    private void setPoints(Long usersId) {
+        userService.updatePoints(usersId, 10L);
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         if (!update.hasMessage() || !update.getMessage().hasText()) return;
 
-        Long chatId = update.getMessage().getChatId();
-        String inputText = update.getMessage().getText().trim();
+        var message = update.getMessage();
+        Long chatId = message.getChatId();
+        String inputText = message.getText().trim();
 
-        if (inputText.equalsIgnoreCase("/start")) {
+        if (inputText.startsWith("/start")) {
             startGame(chatId);
             return;
         }
 
-        if (userStateMap.get(chatId) != UserState.PLAYING) {
-            message("Ketik /start untuk memulai permainan.", chatId);
-            return;
-        }
-
-        if (inputText.equalsIgnoreCase("/nyerah")) {
+        if (inputText.startsWith("/nyerah")) {
             giveUp(chatId);
             return;
         }
 
-        if (inputText.length() != 5) {
+        if (userStateMap.get(chatId) != UserState.PLAYING) {
+            return;
+        }
+
+        if (inputText.length() != 5 || !inputText.matches("[a-zA-Z]+")) {
             message("Tebakanmu harus terdiri dari 5 huruf!", chatId);
             return;
         }
@@ -151,12 +153,9 @@ public class TelegramBotMain extends TelegramLongPollingBot {
         handleGuess(chatId, inputText.toUpperCase());
     }
 
-
     @Override
     public void clearWebhook() {
-
     }
-
     @Override
     public String getBotUsername() {
         return botUsername;
