@@ -1,7 +1,7 @@
-package bot.telegram.menfess.service;
+package bot.telegram.wordle.service;
 
-import bot.telegram.menfess.entity.User;
-import bot.telegram.menfess.repository.UserRespository;
+import bot.telegram.wordle.entity.User;
+import bot.telegram.wordle.repository.UserRespository;
 
 import org.springframework.stereotype.Service;
 

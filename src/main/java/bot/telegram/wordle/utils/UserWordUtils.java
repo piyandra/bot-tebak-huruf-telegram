@@ -1,4 +1,4 @@
-package bot.telegram.menfess.utils;
+package bot.telegram.wordle.utils;
 
 public class UserWordUtils {
 

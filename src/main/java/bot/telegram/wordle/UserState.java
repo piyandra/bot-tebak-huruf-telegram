@@ -1,4 +1,4 @@
-package bot.telegram.menfess;
+package bot.telegram.wordle;
 
 public enum UserState {
     PLAYING,

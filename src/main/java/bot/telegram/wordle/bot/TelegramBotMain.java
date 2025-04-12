@@ -1,10 +1,10 @@
-package bot.telegram.menfess.bot;
+package bot.telegram.wordle.bot;
 
-import bot.telegram.menfess.UserState;
+import bot.telegram.wordle.UserState;
 
-import bot.telegram.menfess.entity.User;
-import bot.telegram.menfess.service.UserService;
-import bot.telegram.menfess.utils.UserWordUtils;
+import bot.telegram.wordle.entity.User;
+import bot.telegram.wordle.service.UserService;
+import bot.telegram.wordle.utils.UserWordUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;

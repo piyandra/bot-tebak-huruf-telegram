@@ -1,4 +1,4 @@
-package bot.telegram.menfess.entity;
+package bot.telegram.wordle.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

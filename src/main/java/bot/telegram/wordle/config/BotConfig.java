@@ -1,7 +1,7 @@
-package bot.telegram.menfess.config;
+package bot.telegram.wordle.config;
 
-import bot.telegram.menfess.bot.TelegramBotMain;
-import bot.telegram.menfess.service.UserService;
+import bot.telegram.wordle.bot.TelegramBotMain;
+import bot.telegram.wordle.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
